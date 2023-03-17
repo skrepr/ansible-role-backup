@@ -1,0 +1,119 @@
+#!/bin/bash
+#
+# {{ ansible_managed }}
+#
+# Backup for mysql servers - shell script.
+#
+
+echo
+echo -e "\e[38;5;198m                 ,itfLLLfti,                 "
+echo -e "\e[38;5;198m            .      fLLLLLf.     .            "
+echo -e "\e[38;5;198m          ;LLf.      fLC,     .fLL;          "
+echo -e "\e[38;5;198m        :CLLLLLf.      fLL...fLLLLLL;        "
+echo -e "\e[38;5;198m      .fLLLLLLLLLf.      fLLLLLLLLLLLf.      "
+echo -e "\e[38;5;198m      LLLLLLLLLLLLLL.      LLLLLLLLLLLL.     "
+echo -e "\e[38;5;198m     tLLLLLLLLLL  ,CLL.      fLLLLLLLLLt     "
+echo -e "\e[38;5;198m    .CLLLLLLLL.    .,CLL.     .LLLLLLLLC,    "
+echo -e "\e[38;5;198m    ;LLLLLLL      .LfLLLLL.     .LLLLLLL;    "
+echo -e "\e[38;5;198m    ;LLLLLLi      LLLLLLLLL.     iLLLLLLi    "
+echo -e "\e[38;5;198m    :LLLLLLfL       LLLLL.      ffLLLLLL:    "
+echo -e "\e[38;5;198m    .CLLLLLLLfL .    .LLL. . .fLLLLLLLLL.    "
+echo -e "\e[38;5;198m     :LLLLLLLLLLL       LLC fLLLLLLLLLL:     "
+echo -e "\e[38;5;198m      ;LLLLLLLLLLLL .    .LfLLLLLLLLLL;      "
+echo -e "\e[38;5;198m       ,CLLLLLLLL,LLL       LLLLLLLfC,       "
+echo -e "\e[38;5;198m         1CLLfC.   :LLL .    .LLLLC1         "
+echo -e "\e[38;5;198m           :L.    . fLLLL      .L:           "
+echo -e "\e[38;5;198m                 .fLLLLLLLL.                 "
+echo -e "\e[38;5;198m                    .....                    "
+echo
+echo -e "\e[39m"
+echo -e "         \e[100mMySQL Database Backup script\e[49m"
+echo -e "               \e[100mÂ© Skrepr 2023\e[49m"
+echo -e "\e[39m"
+
+# Basic variables
+mysqluser="{{ backup_mysql_user }}"
+mysqlpass="{{ backup_mysql_password }}"
+bucket="s3://{{ customer }}-{{ app }}-backup"
+deletetime="{{ deletetime }}"
+directory="{{ directory }}"
+minimalbackups={{ minimal_backups }}
+
+if [[ "$1" ]]
+  then
+  directory="$1"
+fi
+
+if [[ "$2" ]]
+  then
+  deletetime="$2"
+fi
+
+# Timestamp (sortable AND readable)
+stamp=`date +"%s_%A-%d-%B-%Y@%H%M_"`
+
+# List all the databases
+databases=`mysql -u $mysqluser -p$mysqlpass -e "SHOW DATABASES;" | tr -d "| " | grep -v "\(Database\|information_schema\|performance_schema\|mysql\|test\)"`
+
+# Feedback
+echo -e "Dumping to S3"
+
+# Loop the databases
+for db in $databases; do
+
+  # Define our filenames
+  filename="$stamp$db.sql.gz"
+  tmpfile="/tmp/$filename"
+  object="$bucket/$db/$directory/$filename"
+
+  # Feedback
+  echo -e "\e[1;34m$db\e[00m"
+
+  # Dump and zip
+  # Voor InnoDB databases is deze goed, voor MyISAM zie https://serversforhackers.com/c/mysqldump-with-modern-mysql
+  echo -e "  creating \e[0;35m$tmpfile\e[00m"
+  mysqldump -u $mysqluser -p$mysqlpass --force --single-transaction --skip-lock-tables --databases "$db" | gzip -c > "$tmpfile"
+
+  # Upload
+  echo -e "  uploading..."
+  s3cmd put "$tmpfile" "$object"
+  echo
+
+  # Delete
+  rm -f "$tmpfile"
+
+  # Delete older then $deletetime but keep a minimum of 5
+  files=`s3cmd ls $bucket/$db/$directory/`
+  numberFiles=`echo "$files" | wc -l`
+  if [ "$numberFiles" -gt "$minimalbackups" ]
+  then
+    a=-1
+    IFS=$'\n' # maak newlines de enige separator
+    for line in $(s3cmd ls $bucket/$db/$directory/|sort -k1,2 -r) # sorteren met nieuwste bovenaan
+      do
+        a=$(($a+1))
+
+        if [ "$a" -lt "$minimalbackups" ] # eerste 5 overslaan
+        then
+          continue
+        fi
+
+        createDate=`echo $line|awk {'print $1" "$2'}`
+        createDate=`date -d"$createDate" +%s`
+        olderThan=`date -d"-$deletetime" +%s`
+
+        if [[ $createDate -lt $olderThan ]]
+          then
+            fileName=`echo $line|awk {'print $4'}`
+            if [[ $fileName != "" ]]
+              then
+                s3cmd del "$fileName"
+            fi
+        fi
+      done;
+  fi
+
+done;
+
+# Jobs done
+echo -e "\e[1;32mJobs done\e[00m"

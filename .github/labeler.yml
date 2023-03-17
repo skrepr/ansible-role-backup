@@ -1,0 +1,44 @@
+github_actions:
+- any: ['.github/workflows/*']
+
+github:
+- any: ['.github/*']
+
+composer:
+- any: ['composer.+(json|lock)']
+
+documentation:
+- any: ['*.md', '*.MD']
+
+ansible:
+- any: ['ansible/*']
+
+kubernetes:
+- any: ['kubernetes/*']
+
+docker:
+- any: ['docker/*']
+
+dockerfile:
+- any: ['Dockerfile']
+
+docker-compose:
+- any: ['docker-compose.yml', 'docker-compose.*.yml']
+
+# Add 'test' label to any change to files within the test dir
+test:
+- any: ['tests/*']
+
+# Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
+source:
+- any: ['src/**/*', '!src/docs/*']
+
+dotfiles:
+- all: [ '.*', '!.github', '!.git', '!.env']
+
+dotenv:
+- any: ['.env', '.env.*']
+
+# Doctrine migrations
+migrations:
+- any: ['migrations/*']

@@ -1,0 +1,19 @@
+---
+- name: Create backup folder for databases.
+  ansible.builtin.file:
+    path: "{{ backup_path }}/databases"
+    state: directory
+    owner: "{{ backup_user }}"
+    group: "{{ backup_user }}"
+    mode: 0600
+
+- name: Create MySQL user for DB Dumps.
+  community.mysql.mysql_user:
+    name: "{{ backup_mysql_user }}"
+    host: "{{ item }}"
+    priv: "*.*:SELECT"
+    password: "{{ backup_mysql_password }}"
+  with_items:
+    - "127.0.0.1"
+    - "::1"
+    - "localhost"

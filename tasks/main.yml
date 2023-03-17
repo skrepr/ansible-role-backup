@@ -1,0 +1,29 @@
+---
+- ansible.builtin.include: s3.yml
+
+- name: Ensure backup folder exists.
+  ansible.builtin.file:
+    path: "{{ backup_path }}"
+    state: directory
+    owner: "{{ backup_user }}"
+    group: "{{ backup_user }}"
+    mode: 0600
+
+- name: Copy backup script to server.
+  ansible.builtin.template:
+    src: backup.sh.j2
+    dest: "{{ backup_path }}/backup.sh"
+    owner: "{{ backup_user }}"
+    group: "{{ backup_user }}"
+    mode: 0700
+
+- name: Configure backup cron job.
+  ansible.builtin.cron:
+    name: "Backup cron job"
+    minute: "{{ backup_minute }}"
+    hour: "{{ backup_hour }}"
+    user: "{{ backup_user }}"
+    job: "{{ backup_path }}/backup.sh"
+    state: "{{ backup_cron_job_state }}"
+
+- ansible.builtin.include: databases.yml

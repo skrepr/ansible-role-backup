@@ -1,0 +1,30 @@
+---
+
+
+customer: yourcustomer
+app: myapplication
+jira_key: APP # Used for tagging resource in AWS
+
+# S3 settings
+aws_profile: default
+s3_human_readable_sizes: true
+
+# MySQL database backup options.
+backup_mysql_user: backup
+backup_mysql_password: y0urverys3curep4ss
+
+# Script settings
+deletetime: 30 days
+directory: daily
+minimal_backups: 5
+
+# Backup cron job options.
+backup_cron_job_state: present
+backup_hour: "3"
+backup_minute: "00"
+
+# User under which backup jobs will run.
+backup_user: root
+
+# Path to where backups configuration will be stored.
+backup_path: /{{ backup_user }}/backup

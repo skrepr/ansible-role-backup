@@ -1,0 +1,45 @@
+# Add/remove 'critical' label if issue contains the words 'urgent' or 'critical'
+critical:
+  - '(critical|urgent)'
+
+enhancement:
+  -'(Feature|feature|enhancement|Improvement|improvement|verbetering)'
+
+bug:
+  - '(bug)'
+
+docker:
+  - '(docker)'
+
+kubernetes:
+  - '(kubernetes|k8s)'
+
+ansible:
+  -'(ansible)'
+
+documentation:
+  -'(Docs|docs|documentation|README|documentatie)'
+
+github_actions:
+  -'(github_actions|ci|CI|cd||CD|CICD|continuous integration|cicd)'
+
+github:
+  -('github')
+
+composer:
+  -'(composer)'
+
+dockerfile:
+  -'(dockerfile)'
+
+docker-compose:
+  -'(docker-compose)'
+
+test:
+  -'(test|testing|tests|testen)'
+
+dotfiles:
+  -'(dotfiles)'
+
+dotenv:
+  -'(dotenv|env|envfile|.env)'

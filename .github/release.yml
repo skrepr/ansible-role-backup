@@ -1,0 +1,37 @@
+
+## Docs https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes
+
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+  categories:
+    - title: Breaking Changes 🛠
+      labels:
+        - Semver-Major
+        - breaking-change
+    - title: Exciting New Features 🎉
+      labels:
+        - Semver-Minor
+        - enhancement
+    - title: Bug fixes 🐛
+      labels:
+        - "bug"
+    - title: Dependabot 🤖
+      labels:
+        - "dependencies"
+    - title: Changes to Continous Integration ✅
+      labels:
+        - "ci"
+        - "github_actions"
+    - title: Changes to Docker files 
+      labels:
+        - "docker"
+        - "dockerfile"
+        - "docker-compose"
+    - title: Changes to Github files 
+      labels:
+        - "github"
+    - title: Other Changes
+      labels:
+        - "*"

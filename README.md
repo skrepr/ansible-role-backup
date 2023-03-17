@@ -37,8 +37,8 @@ This Ansible role is used for deploying a backup script on a Debian server
 ---
 
 
-customer: yourcustomer
-app: myapplication
+customer: yourcustomer # used for naming resources
+app: myapplication # Used for naming resources
 jira_key: APP # Used for tagging resource in AWS
 
 # S3 settings

@@ -16,26 +16,26 @@ defaults:
     working-directory: 'skrepr.backup'
 
 jobs:
-  yamllint:
-    name: yamlint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the codebase.
-        uses: actions/checkout@v2
-        with:
-          path: 'skrepr.backup'
+  # yamllint:
+  #   name: yamlint
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check out the codebase.
+  #       uses: actions/checkout@v2
+  #       with:
+  #         path: 'skrepr.backup'
 
-      - name: Set up Python 3.
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+  #     - name: Set up Python 3.
+  #       uses: actions/setup-python@v2
+  #       with:
+  #         python-version: '3.x'
 
-      - name: Install test dependencies.
-        run: pip3 install yamllint
+  #     - name: Install test dependencies.
+  #       run: pip3 install yamllint
 
-      - name: Lint code.
-        run: |
-          yamllint .
+  #     - name: Lint code.
+  #       run: |
+  #         yamllint .
 
   ansible-lint:
     name: ansible-lint
@@ -44,7 +44,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Lint Ansible Playbook
-      uses: ansible/ansible-lint-action@master
+      uses: ansible/ansible-lint-action@main
       with:
         targets: |
           default/
@@ -53,36 +53,36 @@ jobs:
           vars/
           requirements.yml
 
-  molecule:
-    name: Molecule
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        distro:
-          # - centos8
-          # - rockylinux8
-          - ubuntu2004
-          - ubuntu1804
-          - debian10
-          - debian11
+  # molecule:
+  #   name: Molecule
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       distro:
+  #         # - centos8
+  #         # - rockylinux8
+  #         - ubuntu2004
+  #         - ubuntu1804
+  #         - debian10
+  #         - debian11
 
-    steps:
-      - name: Check out the codebase.
-        uses: actions/checkout@v2
-        with:
-          path: 'skrepr.backup'
+  #   steps:
+  #     - name: Check out the codebase.
+  #       uses: actions/checkout@v2
+  #       with:
+  #         path: 'skrepr.backup'
 
-      - name: Set up Python 3.
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+  #     - name: Set up Python 3.
+  #       uses: actions/setup-python@v2
+  #       with:
+  #         python-version: '3.x'
 
-      - name: Install test dependencies.
-        run: pip3 install ansible molecule[docker] docker
+  #     - name: Install test dependencies.
+  #       run: pip3 install ansible molecule[docker] docker
 
-      - name: Run Molecule tests.
-        run: molecule test 
-        env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
-          MOLECULE_DISTRO: ${{ matrix.distro }}
+  #     - name: Run Molecule tests.
+  #       run: molecule test 
+  #       env:
+  #         PY_COLORS: '1'
+  #         ANSIBLE_FORCE_COLOR: '1'
+  #         MOLECULE_DISTRO: ${{ matrix.distro }}

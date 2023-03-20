@@ -34,6 +34,12 @@
     state: present
     policy_json: "{{ lookup('template', 'policy.json.j2') }}"
     profile: "{{ aws_profile }}"
+    public_access:
+      block_public_acls: true
+      ignore_public_acls: true
+      block_public_policy: true
+      restrict_public_buckets: true
+
   delegate_to: localhost
   become: false
   vars:

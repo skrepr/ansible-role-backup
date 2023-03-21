@@ -17,7 +17,7 @@
 
 # About
 
-This Ansible role is used for deploying a backup script on a Debian server
+This Ansible role is used for deploying a backup script on a Debian server and then putting the backups in an S3 bucket on AWS.
 
 [![Ansible Role](https://img.shields.io/ansible/role/61780)](https://galaxy.ansible.com/skrepr/backup)
 [![Ansible Role](https://img.shields.io/ansible/role/d/61780)](https://galaxy.ansible.com/skrepr/backup)

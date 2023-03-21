@@ -3,7 +3,7 @@
 
 customer: yourcustomer
 app: myapplication
-jira_key: APP # Used for tagging resource in AWS
+jira_key: APP  # Used for tagging resource in AWS
 
 # S3 settings
 aws_profile: default

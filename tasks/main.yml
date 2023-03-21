@@ -1,5 +1,6 @@
 ---
-- ansible.builtin.include: s3.yml
+- name: Import AWS tasks
+  ansible.builtin.import_tasks: aws.yml
 
 - name: Ensure backup folder exists.
   ansible.builtin.file:
@@ -26,4 +27,5 @@
     job: "{{ backup_path }}/backup.sh"
     state: "{{ backup_cron_job_state }}"
 
-- ansible.builtin.include: databases.yml
+- name: Import database tasks
+  ansible.builtin.import_tasks: databases.yml

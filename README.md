@@ -19,9 +19,9 @@
 
 This Ansible role is used for deploying a backup script on a Debian server
 
-[![Ansible Role](https://img.shields.io/ansible/role/56860)](https://galaxy.ansible.com/skrepr/backup)
-[![Ansible Role](https://img.shields.io/ansible/role/d/56860)](https://galaxy.ansible.com/skrepr/backup)
-[![Ansible Quality Score](https://img.shields.io/ansible/quality/56860)](https://galaxy.ansible.com/skrepr/backup)
+[![Ansible Role](https://img.shields.io/ansible/role/61780)](https://galaxy.ansible.com/skrepr/backup)
+[![Ansible Role](https://img.shields.io/ansible/role/d/61780)](https://galaxy.ansible.com/skrepr/backup)
+[![Ansible Quality Score](https://img.shields.io/ansible/quality/61780)](https://galaxy.ansible.com/skrepr/backup)
 
 ## Requirements
 

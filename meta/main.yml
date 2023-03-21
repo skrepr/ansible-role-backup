@@ -1,0 +1,26 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: backup
+  author: skrepr
+  description: Ansible role for creating backups of your MySQL databases on the server
+  company: "Skrepr B.V."
+  license: "license (BSD, MIT)"
+  min_ansible_version: 2.11
+  platforms:
+    - name: Debian
+      versions:
+        - buster
+        - bullseye
+    - name: Ubuntu
+      versions:
+        - bionic
+        - focal
+  galaxy_tags:
+    - backup
+    - database
+    - mysql
+    - aws
+    - s3
+    - linux

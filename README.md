@@ -50,7 +50,7 @@ backup_mysql_user: backup
 backup_mysql_password: y0urverys3curep4ss
 
 # Script settings
-deletetime: 30 days
+retentiontime: 30 days
 directory: daily
 minimal_backups: 5
 

@@ -27,9 +27,8 @@ This Ansible role is used for deploying a backup script on a Debian server and t
 
 - SSH access to the server
 - aws-cli on your computer
-- `pip3 install boto3`
-- `ansible-galaxy collection install community.aws`
-- `ansible-galaxy collection install amazon.aws`
+- `pip3 install -r requirements.txt `
+- `ansible-galaxy collection install -r requirements.yml`
 
 ## Role Variables
 

@@ -88,12 +88,12 @@ for db in $databases; do
   if [ "$numberFiles" -gt "$minimalbackups" ]
   then
     a=-1
-    IFS=$'\n' # maak newlines de enige separator
+    IFS=$'\n' # Make newlines the only seperator
     for line in $(s3cmd ls $bucket/$db/$directory/|sort -k1,2 -r) # sorteren met nieuwste bovenaan
       do
         a=$(($a+1))
 
-        if [ "$a" -lt "$minimalbackups" ] # eerste 5 overslaan
+        if [ "$a" -lt "$minimalbackups" ] # Skip first 5
         then
           continue
         fi

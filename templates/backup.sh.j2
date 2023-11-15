@@ -76,7 +76,7 @@ for db in $databases; do
 
   # Upload
   echo -e "  uploading..."
-  s3cmd put "$tmpfile" "$object"
+  s3cmd put "$tmpfile" "$object" --storage-class=INTELLIGENT_TIERING
   echo
 
   # Delete
